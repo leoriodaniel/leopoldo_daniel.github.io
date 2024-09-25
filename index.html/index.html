@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Leopoldo Daniel Pintos</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="foto-perfil.jpg.jpg" alt="Foto de Leopoldo Daniel Pintos" class="perfil-img">
+            <div class="header-text">
+                <h1>Leopoldo Daniel Pintos</h1>
+                <p>Web development y Programador en Python</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">Sobre mí</a></li>
+            <li><a href="#skills">Habilidades</a></li>
+            <li><a href="#projects">Proyectos</a></li>
+            <li><a href="#contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="info-container">
+        <div id="clock"></div>
+        <div id="exchange">
+            <p><strong>USD/ARS:</strong> <span id="usd-rate">Cargando...</span></p>
+            <p><strong>BTC/USD:</strong> <span id="btc-rate">Cargando...</span></p>
+        </div>
+    </div>
+
+    <section id="about">
+        <h2>Sobre mí</h2>
+        <p>Soy un desarrollador comprometido con explorar nuevas herramientas para crear soluciones eficientes. Con experiencia en gestión de redes sociales, testing, desarrollo web y Python, me enfoco en ayudar a mejorar proyectos y procesos, siempre buscando formas innovadoras de hacer lo que disfruto.</p>
+    </section>
+
+    <section id="skills">
+        <h2>Habilidades</h2>
+        <ul>
+            <li>Desarrollo Web (HTML, CSS, JavaScript)</li>
+            <li>Python</li>
+            <li>Testing manual</li>
+            <li>Gestión de redes sociales</li>
+        </ul>
+    </section>
+
+    <section id="projects">
+        <h2>Proyectos</h2>
+        <p>Estos son algunos de los proyectos en los que he trabajado:</p>
+        <ul>
+            <li><strong>Proyecto Python:</strong> Solución de Desafíos Lógicos</li>
+            <li><strong>Página Web:</strong> Mi porfolio con HTML y CSS</li>
+        </ul>
+    </section>
+
+    <footer>
+        <section id="contact">
+            <h2>Contacto</h2>
+            <p>Correo: leopoldodanielpintos1991@gmail.com</p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-pintos-617634253/">Leopoldo Daniel Pintos</a></p>
+            <p>Si deseas contactarme a través de WhatsApp, haz clic en el siguiente enlace:</p>
+            <a href="https://wa.me/1121676621" target="_blank">Enviarme un mensaje por WhatsApp</a>
+        </section>
+    </footer>
+
+    <script>
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            clock.textContent = `Hora: ${hours}:${minutes}:${seconds}`;
+        }
+
+        function getBitcoinRate() {
+            fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+                .then(response => response.json())
+                .then(data => {
+                    const btcRate = data.bpi.USD.rate;
+                    document.getElementById('btc-rate').textContent = `$${btcRate}`;
+                })
+                .catch(error => {
+                    console.error('Error al obtener la cotización del Bitcoin:', error);
+                });
+        }
+
+        function getDollarRate() {
+            fetch('https://api.bluelytics.com.ar/v2/latest')
+                .then(response => response.json())
+                .then(data => {
+                    const usdBlue = data.blue.value_avg;
+                    document.getElementById('usd-rate').textContent = `$${usdBlue} ARS (Blue)`;
+                })
+                .catch(error => {
+                    console.error('Error al obtener la cotización del Dólar:', error);
+                });
+        }
+
+        function updateExchangeRates() {
+            getBitcoinRate();
+            getDollarRate();
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+        updateExchangeRates();
+        setInterval(updateExchangeRates, 20000);
+    </script>
+</body>
+</html>
